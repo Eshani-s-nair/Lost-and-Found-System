@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lost,found.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Found Items</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Found Items</h1>
+        <div class="to-next-pages">
+            <a href="found-form.html">Add Item</a>
+            <a href="lost.html"><button id="go-to-lost">Go to Lost</button></a>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-total">
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchBox" placeholder="Search items..." autocomplete="off">
+            <div id="itemSuggestions" class="suggestion-box"></div>
+        </div>
+    </div>
+
+    <!-- Item Dashboard -->
+    <h2>Dashboard</h2>
+    <div class="container">
+        <div class="found"> 
+            <!-- Items will be added here dynamically -->
+        </div>
+    </div>
+
+    <script src="found.js"></script>
+</body>
+</html>

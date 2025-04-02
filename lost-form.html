@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="found,lost-form.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Lost-form</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Lost Item</h1>
+        <a href="lost.html"><button id="back-button">Back</button></a>
+    </div>
+  
+    <div class="container">
+        <div class="left">
+            <p>Attach image:</p>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment">
+            <label for="category">Select Category:</label>
+            <select id="category" name="category">
+            <option value="lost">Electronics</option>
+            <option value="lost">Wallets & Cards</option>
+            <option value="lost">Clothing & Acessoreies</option>
+            <option value="lost">Bag & Belongings</option>
+            <option value="lost">Books & Statinaries</option>
+            <option value="lost">Others</option>
+            </select>
+
+            <input type="text" placeholder="DD/MM/YYYY">
+            <p>I think lost at this location:</p>
+            <p>Loction 1:</p>
+            <input type="text" placeholder="type location">
+            <p>Loction 2:</p>
+            <input type="text" placeholder="type location">
+            <p>Loction 3:</p>
+            <input type="text" placeholder="type location">
+            <p>Description</p>
+            <input type="text" placeholder="type here the description of the item">
+            <p>Lost Since:</p>
+            <input type="text" placeholder="DD/MM/YYYY">
+            <h3>Enter your Details</h3>
+            <p>Name:</p>
+            <input type="text" placeholder="Name">
+            <p>Contact Number:</p>
+            <input type="text" placeholder="10-digits Number">
+            <button id="Submit-button">Submit</button>
+
+        </div>
+    </div>
+    <script src="home.js"></script>
+</body>
+</html>
