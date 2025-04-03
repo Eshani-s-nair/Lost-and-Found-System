@@ -1,108 +1,84 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("found.js is loaded!");
+    console.log("Loading found items...");
 
-    // Sample Found Items Data
-    const foundItems = [
-        { id: "rolex-watch", name: "Rolex Watch", image: "watch.webp", location: "Near Nedumbasherry" },
-        { id: "leather-bag", name: "Leather Bag", image: "bag.webp", location: "Bus Stand" }
-    ];
+    fetch("fetch_found_items.php")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data received:", data);
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid data format received");
+            }
+            displayItems(data);
+        })
+        .catch(error => console.error("Error fetching items:", error));
 
-    const container = document.querySelector(".found");
+    // Search functionality
     const searchBox = document.getElementById("searchBox");
-    const suggestionsBox = document.getElementById("itemSuggestions");
-
-    // Function to create item card
-    function createFoundCard(item) {
-        let card = document.createElement("div");
-        card.classList.add("box");
-        card.innerHTML = `
-            <img src="${item.image}" width="180px" height="200px" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>Location: ${item.location}</p>
-            <a href="item.html?id=${item.id}">Check details</a>
-        `;
-        container.appendChild(card);
-    }
-
-    // Load all found items
-    function displayItems() {
-        container.innerHTML = "";
-        foundItems.forEach(item => createFoundCard(item));
-    }
-
-    // Search function
     searchBox.addEventListener("input", function () {
-        let query = searchBox.value.toLowerCase();
-        let filteredItems = foundItems.filter(item => item.name.toLowerCase().includes(query));
-        
-        suggestionsBox.innerHTML = "";
-        filteredItems.forEach(item => {
-            let suggestion = document.createElement("div");
-            suggestion.classList.add("suggestion-item");
-            suggestion.textContent = item.name;
-            suggestion.addEventListener("click", function () {
-                window.location.href = `item.html?id=${item.id}`;
-            });
-            suggestionsBox.appendChild(suggestion);
-        });
-
-        suggestionsBox.style.display = filteredItems.length ? "block" : "none";
-    });
-
-    // Initialize items on page load
-    displayItems();
-});
-
-
-
-//search bar suggession function change the item set to database items
-
-document.addEventListener("DOMContentLoaded", function () {
-    let searchBox = document.getElementById("searchBox");
-    let suggestionBox = document.getElementById("itemSuggestions");
-
-    let items = [
-        "Black Wallet",
-        "Blue Water Bottle",
-        "iPhone 12",
-        "Car Keys",
-        "Red Backpack",
-        "Samsung Galaxy S21",
-        "Laptop Bag",
-        "Apple AirPods",
-        "Waterproof Jacket",
-        "Wrist Watch"
-    ];
-
-    function showItemSuggestions() {
-        let input = searchBox.value.toLowerCase();
-        suggestionBox.innerHTML = "";
-
-        if (input === "") {
-            return;
-        }
-
-        let filteredResults = items.filter(item => item.toLowerCase().includes(input));
-
-        filteredResults.forEach(item => {
-            let div = document.createElement("div");
-            div.textContent = item;
-            div.classList.add("suggestion-item");
-            div.onclick = function () {
-                searchBox.value = item;
-                suggestionBox.innerHTML = "";
-            };
-            suggestionBox.appendChild(div);
-        });
-    }
-
-    searchBox.addEventListener("keyup", showItemSuggestions);
-
-    document.addEventListener("click", function (event) {
-        if (!searchBox.contains(event.target) && !suggestionBox.contains(event.target)) {
-            suggestionBox.innerHTML = ""; // Hide suggestions when clicking outside
+        const query = searchBox.value.trim();
+        if (query.length > 0) {
+            fetch(`search_items.php?query=${query}`)
+                .then(response => response.json())
+                .then(results => {
+                    const suggestionBox = document.getElementById("itemSuggestions");
+                    suggestionBox.innerHTML = "";
+                    results.forEach(item => {
+                        const suggestion = document.createElement("div");
+                        suggestion.classList.add("suggestion-item");
+                        suggestion.textContent = item.name;
+                        suggestion.addEventListener("click", () => {
+                            window.location.href = `item.html?id=${item.id}`;
+                        });
+                        suggestionBox.appendChild(suggestion);
+                    });
+                })
+                .catch(error => console.error("Error fetching search results:", error));
         }
     });
 });
 
+function displayItems(items) {
+    const container = document.querySelector(".found"); // Ensure correct container selection
+    container.innerHTML = ""; // Clear previous items
+
+    items.forEach(item => {
+        const box = document.createElement("div");
+        box.classList.add("box");
+
+        // Ensure proper image path handling
+        let imagePath = item.image_path ? item.image_path : "uploads/default.png";
+
+        // Create image element
+        const img = document.createElement("img");
+        img.src = imagePath;
+        img.alt = "Item Image";
+        img.onerror = function () {
+            this.src = "uploads/default.png"; // Fallback for broken images
+        };
+
+        // Create details div
+        const details = document.createElement("div");
+        details.classList.add("details");
+        details.innerHTML = `
+            <h3>${item.category || "Unknown Category"}</h3>
+            <p><strong>Description:</strong> ${item.description}</p>
+ 
+            <p><strong>Date Found:</strong> ${item.date_found || "N/A"}</p>
+            <p><strong>Location:</strong> ${item.location || "Unknown"}</p>
+            <a href="item.html?id=${item.id}" class="details-btn">View Details</a>
+        `;
+
+        // Append elements to box
+        box.appendChild(img);
+        box.appendChild(details);
+
+        // Append box to container
+        container.appendChild(box);
+    });
+}
 

@@ -1,36 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("item.js is loaded!");
+    console.log("Loading item details...");
 
-    // Get item ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const itemId = urlParams.get("id");
 
-    // Sample Found Items Data (same as found.js)
-    const foundItems = [
-        { id: "rolex-watch", name: "Rolex Watch", image: "watch.webp", date: "20-03-2025", location: "Near Nedumbasherry", description: "Brown color Rolex watch", reportedBy: "Eshani", contact: "9995511782", pickup: "Kochi" },
-        { id: "leather-bag", name: "Leather Bag", image: "bag.webp", date: "25-03-2025", location: "Bus Stand", description: "Black leather bag with documents", reportedBy: "Rahul", contact: "9876543210", pickup: "Ernakulam" }
-    ];
-
-    // Find the item by ID
-    const item = foundItems.find(i => i.id === itemId);
-    
-    if (!item) {
+    if (!itemId) {
         document.body.innerHTML = "<h2>Item Not Found</h2>";
         return;
     }
 
-    // Update the HTML with item details
-    document.getElementById("item-name").innerText = item.name;
-    document.getElementById("item-image").src = item.image;
-    document.getElementById("item-details").innerHTML = `
-        <p>Date Found : ${item.date}</p>
-        <p>Location: ${item.location}</p>
-        <p>Description: ${item.description}</p>
-        <h3>Reported by:</h3>
-        <p>Name: ${item.reportedBy}</p>
-        <p>Contact No: ${item.contact}</p>
-        <p>Pickup Location: ${item.pickup}</p>
-    `;
+    fetch(`fetch_item.php?id=${itemId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(item => {
+            console.log("Item Data:", item);
+            if (!item || Object.keys(item).length === 0) {
+                document.body.innerHTML = "<h2>Item Not Found</h2>";
+                return;
+            }
 
-    console.log("Item details updated:", item.name);
+            document.getElementById("item-name").innerText = item.name;
+            document.getElementById("item-image").src = item.image_path || "default.png"; // Default image if empty
+            document.getElementById("item-details").innerHTML = `
+                <p><strong>Date Found:</strong> ${item.date_found}</p>
+                <p><strong>Location:</strong> ${item.location}</p>
+                <p><strong>Description:</strong> ${item.description}</p>
+                <h3>Reported by:</h3>
+                <p><strong>Name:</strong> ${item.name}</p>
+                <p><strong>Contact No:</strong> ${item.contact_number}</p>
+                <p><strong>Pickup Location:</strong> ${item.pickup_location}</p>
+            `;
+        })
+        .catch(error => console.error("Error fetching item details:", error));
 });

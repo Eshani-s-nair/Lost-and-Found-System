@@ -14,36 +14,47 @@
     </div>
   
     <div class="container">
-        <div class="left">
-            <p>Attach image:</p>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment">
-            <label for="category">Select Category:</label>
-            <select id="category" name="category">
-            <option value="lost">Electronics</option>
-            <option value="lost">Wallets & Cards</option>
-            <option value="lost">Clothing & Acessoreies</option>
-            <option value="lost">Bag & Belongings</option>
-            <option value="lost">Books & Statinaries</option>
-            <option value="lost">Others</option>
-            </select>
+        <form action="submit.php" method="POST" enctype="multipart/form-data">
+            <div class="left">
+                <p>Attach image:</p>
+                <input type="file" name="image" accept="image/*">
+                
+                <label for="category">Select Category:</label>
+                <select id="category" name="category">
+                    <option value="Electronics">Electronics</option>
+                    <option value="Wallets & Cards">Wallets & Cards</option>
+                    <option value="Clothing & Accessories">Clothing & Accessories</option>
+                    <option value="Bag & Belongings">Bag & Belongings</option>
+                    <option value="Books & Stationery">Books & Stationery</option>
+                    <option value="Others">Others</option>
+                </select>
 
-            <p>Date Found:</p>
-            <input type="text" placeholder="DD/MM/YYYY">
-            <p>Loction</p>
-            <input type="text" placeholder="type location">
-            <p>Description</p>
-            <input type="text" placeholder="type here the description of the item">
-            <h3>Enter your details</h3>
-            <p>Name:</p>
-            <input type="text" placeholder="Name">
-            <p>Contact Number:</p>
-            <input type="text" placeholder="10-digits Number">
-            <p>Pickup Location:</p>
-            <input type="text" placeholder="Provide Location">
-            <button id="Submit-button">Submit</button>
+                <p>Date Found:</p>
+                <input type="date" name="date_found" required>
+                
+                <p>Location:</p>
+                <input type="text" name="location" placeholder="Type location" required>
 
-        </div>
+                <p>Description:</p>
+                <input type="text" name="description" placeholder="Description of the item" required>
+
+                <h3>Enter your details</h3>
+                
+                <p>Name:</p>
+                <input type="text" name="name" placeholder="Your name" required>
+                
+                <p>Contact Number:</p>
+                <input type="text" name="contact_number" placeholder="10-digit number" required>
+
+                <p>Pickup Location:</p>
+                <input type="text" name="pickup_location" placeholder="Provide location" required>
+
+                <button type="submit" name="submit">Submit</button>
+            </div>
+        </form>
     </div>
-    
 </body>
 </html>
+
+
+

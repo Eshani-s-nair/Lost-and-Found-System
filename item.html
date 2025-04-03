@@ -7,20 +7,27 @@
     <title>Item Details</title>
 </head>
 <body>
+
     <div class="navbar">
         <h1 id="item-name">Item Name</h1>
         <a href="found.html">Back</a>
     </div>
+
     <div class="container">
         <div class="left">
-            <img id="item-image" src="" width="150px" height="180px">
+            <img id="item-image" src="" width="150px" height="180px" onerror="this.src='default.png'">
             <div class="details" id="item-details"></div>
+            <button id="Claim-button">Claim</button>
         </div>
     </div>
+
     <div class="disclaimer">
-        <p>Disclaimer: Please check photo and read description carefully before claiming. Wrong claims may attract penalties.</p>
+        <p>Disclaimer: Please check the photo and read the description carefully before claiming. Wrong claims may attract penalties.</p>
     </div>
-    <button id="Claim-button">Claim</button>
+
     <script src="item.js"></script>
+
 </body>
 </html>
+
+
